@@ -10,7 +10,6 @@ SOURCES += \
     main.cpp \
     particledatacontainer.cpp \
     particleemitter.cpp \
-    particlegenerator.cpp \
     multithreadoverseer.cpp
 
 HEADERS += \

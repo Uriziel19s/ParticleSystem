@@ -2,12 +2,14 @@
 #define PARTICLEGENERATOR_H
 #include <cstdlib>
 
+#include "multithreadoverseer.h"
+#include <particledatacontainer.h>
 class ParticleGenerator
 {
 public:
     ParticleGenerator();
     virtual ~ParticleGenerator();
-    virtual void generate(float dt, size_t start_id, size_t end_id) = 0;
+    virtual void generate(float dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) = 0;
 };
 
 #endif // PARTICLEGENERATOR_H

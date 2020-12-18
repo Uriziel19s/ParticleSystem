@@ -37,11 +37,16 @@ void ParticleDataContainer::Wake(size_t id)
     count_alive_++;
 }
 
-void ParticleDataContainer::WakeUpAll(size_t id)
+void ParticleDataContainer::WakeUpAll()
 {
-    for(int i = 0; i < id; i++)
+    for(int i = 0; i < count_; i++)
     {
-
+        if(!alive_[i])
+        {
+            alive_[i] = true;
+            SwapData(i, count_alive_);
+            count_alive_++;
+        }
     }
 }
 

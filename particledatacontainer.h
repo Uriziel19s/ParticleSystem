@@ -16,7 +16,7 @@ public:
     void Generate(size_t max_size);
     void Kill(size_t id);
     void Wake(size_t id);
-    void WakeUpAll(size_t id);
+    void WakeUpAll();
     void SwapData(size_t id_A, size_t id_B);
 
     std::unique_ptr<glm::vec3[]> positions_;
