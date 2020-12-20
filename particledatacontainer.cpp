@@ -4,7 +4,7 @@
 
 ParticleDataContainer::ParticleDataContainer(size_t max_size)
 {
-
+    Generate(max_size);
 }
 
 void ParticleDataContainer::Generate(size_t max_size)
@@ -30,6 +30,15 @@ void ParticleDataContainer::Kill(size_t id)
     SwapData(id, count_alive_);
 }
 
+void ParticleDataContainer::KillAll()
+{
+    for(size_t i = 0; i < count_; i++)
+    {
+            alive_[i] = false;
+    }
+    count_alive_= 0;
+}
+
 void ParticleDataContainer::Wake(size_t id)
 {
     alive_[id] = true;
@@ -39,15 +48,11 @@ void ParticleDataContainer::Wake(size_t id)
 
 void ParticleDataContainer::WakeUpAll()
 {
-    for(int i = 0; i < count_; i++)
+    for(size_t i = 0; i < count_; i++)
     {
-        if(!alive_[i])
-        {
             alive_[i] = true;
-            SwapData(i, count_alive_);
-            count_alive_++;
-        }
     }
+    count_alive_= count_;
 }
 
 void ParticleDataContainer::SwapData(size_t id_A, size_t id_B)

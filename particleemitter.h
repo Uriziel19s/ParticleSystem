@@ -8,9 +8,9 @@
 class ParticleEmitter
 {
 public:
-    ParticleEmitter(float emit_rate);
-    virtual ~ParticleEmitter();
-    virtual void Emit(float dt, ParticleDataContainer *p, MultithreadOverseer *task_menager);
+    ParticleEmitter(double emit_rate);
+    virtual ~ParticleEmitter() { }
+    virtual void Emit(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager);
     void AddGenerator(std::shared_ptr<ParticleGenerator> generator);
 private:
     double emit_rate_;

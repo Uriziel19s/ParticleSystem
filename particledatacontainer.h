@@ -8,13 +8,15 @@
 class ParticleDataContainer
 {
 public:
+    ParticleDataContainer() { }
     explicit ParticleDataContainer(size_t max_size);
-    ~ParticleDataContainer();
+    ~ParticleDataContainer() { }
     ParticleDataContainer(ParticleDataContainer &) = delete;
     ParticleDataContainer operator=(ParticleDataContainer&) = delete;
 
     void Generate(size_t max_size);
     void Kill(size_t id);
+    void KillAll();
     void Wake(size_t id);
     void WakeUpAll();
     void SwapData(size_t id_A, size_t id_B);
