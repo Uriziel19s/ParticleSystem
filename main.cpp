@@ -8,9 +8,14 @@
 #include "multithreadoverseer.h"
 #include "openglparticlerenderer.h"
 #include "particleemitter.h"
-#include "particlesystem.h"
 #include "particlegenerators.h"
+#include "particlesystem.h"
+#include "particleupdaters.h"
 #include "shader.h"
+
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
 
 using namespace std;
 
@@ -69,27 +74,40 @@ void MyWin::MousePosCB(double xp, double yp)
 // ==========================================================================
 void MyWin::MainLoop()
 {
+    const size_t kNumberOfParticles = 1000000;
+    const double dt = 0.1;
     Shader program("../../ParticleSys/app/simpleshader.vert", "../../ParticleSys/app/simpleshader.frag");
     program.use();
-    ParticleSystem system(10000000, 11);
+    ParticleSystem system(kNumberOfParticles, 11);
     OpenGLParticleRenderer renderer;
-    auto emiter = std::make_shared<ParticleEmitter>(5);
+    auto emiter = std::make_shared<ParticleEmitter>(kNumberOfParticles);
     {
+        //settings section
         auto position_generator = std::make_shared<SpherePositionGenerator>();
         position_generator->center_ = {0.0f, 0.0f, 0.0f};
-        position_generator->radius_ = 1.0f;
+        position_generator->radius_ = 10.0f;
         emiter->AddGenerator(position_generator);
 
         auto color_generator = std::make_shared<OneColorGenerator>();
-        color_generator->color_ = {0.0f, 1.0f, 0.0f};
+        color_generator->color_ = {1.0f, 1.0f, 1.0f};
         emiter->AddGenerator(color_generator);
 
+        auto velocity_generator = std::make_shared<BasicVelocityGenerator>();
+        velocity_generator->velocity_ = {0.50f, 0.0f, 0.0f};
+        emiter->AddGenerator(velocity_generator);
+
+        auto acceleration_generator = std::make_shared<BasicAccelerationGenerator>();
+        acceleration_generator->acceleration_ = {0.0f, 0.0f, 0.0f};
+        emiter->AddGenerator(acceleration_generator);
+
+        auto update_generator = std::make_shared<LawOfUniversalGravitationUpdater>();
+        update_generator->center_mass_ = 3.0f;
+        update_generator->center_position_ = {0.0f, 0.0f, 0.0f};
+        system.AddUpdater(update_generator);
     }
     system.AddEmiter(emiter);
-    system.Update(10000000);
+    system.Update(1);
     renderer.Generate(&system);
-    renderer.Update();
-
 
 
     float speed = 0.2f;
@@ -111,6 +129,8 @@ void MyWin::MainLoop()
         glUniformMatrix4fv(0, 1, GL_FALSE, &projection[0][0]);
         glUniformMatrix4fv(1, 1, GL_FALSE, &view[0][0]);
         camera.updateView();
+        system.Update(dt);
+        renderer.Update();
         renderer.Render();
         AGLErrors("main-afterdraw");
         WaitForFixedFPS(1.0f/60.0f);

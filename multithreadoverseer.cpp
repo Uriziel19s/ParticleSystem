@@ -9,6 +9,12 @@ MultithreadOverseer::MultithreadOverseer(size_t workers_number) : number_of_work
     }
 }
 
+MultithreadOverseer::~MultithreadOverseer()
+{
+    WaitForAllTasks();
+    Stop();
+}
+
 void MultithreadOverseer::WorkLoop(MultithreadOverseer *context)
 {
     std::unique_lock<std::mutex> wait_lock(context->waitMutex, std::defer_lock);

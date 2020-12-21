@@ -11,7 +11,6 @@
 class ParticleSystem
 {
 protected:
-    ParticleDataContainer particles_;
     MultithreadOverseer task_menager;
 
     size_t count_;
@@ -20,6 +19,7 @@ protected:
     std::vector<std::shared_ptr<ParticleUpdater>> updaters_;
 
 public:
+    ParticleDataContainer particles_;
     explicit ParticleSystem(size_t max_count, size_t number_of_threads);
     virtual ~ParticleSystem() { }
 

@@ -16,6 +16,7 @@ class MultithreadOverseer
 {
 public:
     explicit MultithreadOverseer(size_t workers_number);
+    ~MultithreadOverseer();
     MultithreadOverseer(MultithreadOverseer &object) = delete;
 
     void AddTask(std::future<void> &&task);
