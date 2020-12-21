@@ -12,7 +12,8 @@ public:
     float radius_{1};
     glm::vec3 center_{0.0f, 0.0f, 0.0f};
 
-    SpherePositionGenerator() = default;
+    SpherePositionGenerator() { }
+    ~SpherePositionGenerator() override{ }
     void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
 };
 
@@ -21,7 +22,8 @@ class OneColorGenerator : public ParticleGenerator
 public:
     glm::vec3 color_{1.0f, 1.0f, 1.0f};
 
-    OneColorGenerator() = default;
+    OneColorGenerator() { }
+    ~OneColorGenerator() override { }
     void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
 };
 

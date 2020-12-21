@@ -8,7 +8,9 @@ void OpenGLParticleRenderer::Generate(ParticleSystem *system)
     system_ = system;
 
     const size_t count = system_->NumberOfParticles();
-
+    for(int i = 0; i < count; i++)
+    {
+    }
     glGenVertexArrays(1, &vao_);
     glBindVertexArray(vao_);
 
@@ -16,13 +18,13 @@ void OpenGLParticleRenderer::Generate(ParticleSystem *system)
     glBindBuffer(GL_ARRAY_BUFFER, position_buffer_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * count, nullptr, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0 );
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
 
     glGenBuffers(1, &color_buffer_);
     glBindBuffer(GL_ARRAY_BUFFER, color_buffer_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * count, nullptr, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0 );
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
 
     glBindVertexArray(0);
 }
@@ -51,10 +53,10 @@ void OpenGLParticleRenderer::Update()
     if(count > 0)
     {
         glBindBuffer(GL_ARRAY_BUFFER, position_buffer_);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, count*sizeof(float)* 4, system_->FinalData()->positions_.get());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, count*sizeof(float)* 3, system_->FinalData()->positions_.get());
 
         glBindBuffer(GL_ARRAY_BUFFER, color_buffer_);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, count*sizeof(float)* 4, system_->FinalData()->color_.get());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, count*sizeof(float)* 3, system_->FinalData()->color_.get());
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }

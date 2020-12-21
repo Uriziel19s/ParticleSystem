@@ -1,12 +1,17 @@
 #include <iostream>
-#include "multithreadoverseer.h"
+
+
+#include <epoxy/gl.h>
 
 #include <AGL3Window.hpp>
 #include <camera.h>
+#include "multithreadoverseer.h"
+#include "openglparticlerenderer.h"
 #include "particleemitter.h"
 #include "particlesystem.h"
 #include "particlegenerators.h"
-#include "openglparticlerenderer.h"
+#include "shader.h"
+
 using namespace std;
 
 
@@ -16,7 +21,7 @@ public:
     MyWin(int _wd, int _ht, const char *name, int vers, int fullscr=0)
         : AGLWindow(_wd, _ht, name, vers, fullscr), lastMouseXPosition(_wd / 2.0f), lastMouseYPosition(_ht / 2.0f) {}
     virtual void KeyCB(int key, int scancode, int action, int mods);
-    void MainLoop(const int seed, const unsigned int dimensions);
+    void MainLoop();
     void ScrollCB(double xp, double yp);
     void MousePosCB(double xp, double yp);
     void display();
@@ -39,10 +44,10 @@ void MyWin::display()
 void MyWin::KeyCB(int key, int scancode, int action, int mods) {
     AGLWindow::KeyCB(key,scancode, action, mods); // f-key full screen switch
     if ((key == GLFW_KEY_SPACE) && action == GLFW_PRESS) {
-        ; // do something
+         // do something
     }
     if (key == GLFW_KEY_HOME  && (action == GLFW_PRESS)) {
-        ; // do something
+         // do something
     }
 }
 
@@ -62,9 +67,11 @@ void MyWin::MousePosCB(double xp, double yp)
 }
 
 // ==========================================================================
-void MyWin::MainLoop(int seed, unsigned int dimensions)
+void MyWin::MainLoop()
 {
-    ParticleSystem system(1000, 11);
+    Shader program("../../ParticleSys/app/simpleshader.vert", "../../ParticleSys/app/simpleshader.frag");
+    program.use();
+    ParticleSystem system(10000000, 11);
     OpenGLParticleRenderer renderer;
     auto emiter = std::make_shared<ParticleEmitter>(5);
     {
@@ -79,8 +86,9 @@ void MyWin::MainLoop(int seed, unsigned int dimensions)
 
     }
     system.AddEmiter(emiter);
+    system.Update(10000000);
     renderer.Generate(&system);
-
+    renderer.Update();
 
 
 
@@ -90,14 +98,20 @@ void MyWin::MainLoop(int seed, unsigned int dimensions)
     glfwSetInputMode(win(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     ViewportOne(0, 0, wd, ht);
     camera.setCameraTarget(startCameraPosition);
+
     glEnable(GL_DEPTH_TEST);
     do
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         AGLErrors("main-loopbegin");
         // =====================================================        Drawing
+        glm::mat4 view = camera.getView();
+        glm::mat4 projection = camera.getProjection(wd, ht);
+        glBindVertexArray(renderer.vao_);
+        glUniformMatrix4fv(0, 1, GL_FALSE, &projection[0][0]);
+        glUniformMatrix4fv(1, 1, GL_FALSE, &view[0][0]);
         camera.updateView();
-
+        renderer.Render();
         AGLErrors("main-afterdraw");
         WaitForFixedFPS(1.0f/60.0f);
         glfwPollEvents();
@@ -148,7 +162,9 @@ void MyWin::MainLoop(int seed, unsigned int dimensions)
 
 int main()
 {
-    return 0;
+    MyWin win;
+    win.Init(800, 800, "AGL3 example", 0, 33);
+    win.MainLoop();
 }
 
 

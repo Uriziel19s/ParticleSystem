@@ -7,7 +7,7 @@
 #include "particlesystem.h"
 class OpenGLParticleRenderer : public InterfaceParticleRenderer
 {
-protected:
+public:
     ParticleSystem * system_{nullptr};
 
     unsigned int position_buffer_{0};

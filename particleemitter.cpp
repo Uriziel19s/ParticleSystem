@@ -11,14 +11,14 @@ void ParticleEmitter::Emit(double dt, ParticleDataContainer *p, MultithreadOvers
     const size_t kStartId = p->count_alive_;
     const size_t kEndId = std::min(kStartId + kMaxNewParticles, p->count_);
 
-    for(size_t i  = 0; i < task_menager->number_of_workers_; i++)
-    {
+
         for(auto &gen : generators_)
         {
             gen->generate(dt, p, task_menager, kStartId, kEndId);
             task_menager->WaitForAllTasks();
+            std::cout << "asffas" << std::endl;
         }
-    }
+
 
     p->WakeUpAll();
 }

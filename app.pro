@@ -1,8 +1,9 @@
-TEMPLATE = lib
+TEMPLATE = app
 CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 LIBS += -pthread -Wall -pedantic
+LIBS   += -lepoxy
 LIBS   += -lGL
 LIBS   += -lglfw
 
@@ -33,3 +34,7 @@ HEADERS += \
     shader.h \
     AGL3Window.hpp \
     camera.h
+
+DISTFILES += \
+    simpleshader.frag \
+    simpleshader.vert

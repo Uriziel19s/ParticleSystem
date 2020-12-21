@@ -133,17 +133,18 @@ private:
                 glGetShaderInfoLog(shader, 1024, nullptr, info_log);
                 std::cerr << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << info_log << std::endl;
             }
-            else
+        }
+        else
+        {
+            glGetProgramiv(shader, GL_LINK_STATUS, &succes);
+            if(!succes)
             {
-                glGetProgramiv(shader, GL_LINK_STATUS, &succes);
-                if(!succes)
-                {
-                    glGetProgramInfoLog(shader, 1024, nullptr, info_log);
-                    std::cerr << "ERROR::SHADER_LINKING_ERROR of type: " << type << "\n" << info_log << std::endl;
-                }
+                glGetProgramInfoLog(shader, 1024, nullptr, info_log);
+                std::cerr << "ERROR::SHADER_LINKING_ERROR of type: " << type << "\n" << info_log << std::endl;
             }
         }
     }
+
 };
 
 #endif // SHADER_H
