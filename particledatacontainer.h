@@ -28,6 +28,7 @@ public:
     std::unique_ptr<glm::vec3[]> velocity_;
     std::unique_ptr<glm::vec3[]> acceleration_;
     std::unique_ptr<glm::vec3[]> time_;
+    std::unique_ptr<float[]> mass_;
     std::unique_ptr<bool[]> alive_;
 
     size_t count_{0};

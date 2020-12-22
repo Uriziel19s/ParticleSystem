@@ -19,6 +19,11 @@
 
 using namespace std;
 
+void *operator new(size_t size)
+{
+
+    return malloc(size);
+}
 
 class MyWin : public AGLWindow {
 public:
@@ -75,8 +80,9 @@ void MyWin::MousePosCB(double xp, double yp)
 void MyWin::MainLoop()
 {
     double last_time = 0;
-    const size_t kNumberOfParticles = 2000000;
-     double dt = 0.05;
+    const double simulation_speed_incrementation = 0.001;
+    const size_t kNumberOfParticles = 2000;
+     double dt = 0.0f;
     Shader program("../../ParticleSys/app/simpleshader.vert", "../../ParticleSys/app/simpleshader.frag");
     program.use();
     ParticleSystem system(kNumberOfParticles, 11);
@@ -85,8 +91,8 @@ void MyWin::MainLoop()
     {
         //settings section
         auto position_generator = std::make_shared<SpherePositionGenerator>();
-        position_generator->center_ = {2.5f, 0.0f, 0.0f};
-        position_generator->radius_ = 20.0f;
+        position_generator->center_ = {0.0f, 0.0f, 0.0f};
+        position_generator->radius_ = 7.0f;
         emiter->AddGenerator(position_generator);
 
         auto color_generator = std::make_shared<OneColorGenerator>();
@@ -94,30 +100,37 @@ void MyWin::MainLoop()
         emiter->AddGenerator(color_generator);
 
         auto velocity_generator = std::make_shared<BasicVelocityGenerator>();
-        velocity_generator->velocity_ = {0.5f, 0.0f, 0.0f};
+        velocity_generator->velocity_ = {1.0f, 0.0f, 0.0f};
         emiter->AddGenerator(velocity_generator);
 
         auto acceleration_generator = std::make_shared<BasicAccelerationGenerator>();
         acceleration_generator->acceleration_ = {0.0f, 0.0f, 0.0f};
         emiter->AddGenerator(acceleration_generator);
 
-        auto update_generator = std::make_shared<LawOfUniversalGravitationUpdater>();
-        update_generator->center_mass_ = 10.0f;
-        update_generator->center_position_ = {0.0f, 0.0f, 0.0f};
-        system.AddUpdater(update_generator);
+        auto mass_generator = std::make_shared<BasicMassGenerator>();
+        mass_generator->mass_ = 0.05;
+        emiter->AddGenerator(mass_generator);
 
-        auto update_generator2 = std::make_shared<LawOfUniversalGravitationUpdater>();
-        update_generator2->center_mass_ = 10.0f;
-        update_generator2->center_position_ = {5.0f, 0.0f, 0.0f};
-        system.AddUpdater(update_generator2);
+//        auto update_generator = std::make_shared<LawOfUniversalGravitationUpdater>();
+//        update_generator->center_mass_ = 10.0f;
+//        update_generator->center_position_ = {0.0f, 0.0f, 0.0f};
+//        system.AddUpdater(update_generator);
 
-        auto update_generator3 = std::make_shared<LawOfUniversalGravitationUpdater>();
-        update_generator3->center_mass_ = 10.0f;
-        update_generator3->center_position_ = {2.5f, 2.5f, 0.0f};
-        system.AddUpdater(update_generator3);
+//        auto update_generator2 = std::make_shared<LawOfUniversalGravitationUpdater>();
+//        update_generator2->center_mass_ = 10.0f;
+//        update_generator2->center_position_ = {5.0f, 0.0f, 0.0f};
+//        system.AddUpdater(update_generator2);
+
+//        auto update_generator3 = std::make_shared<LawOfUniversalGravitationUpdater>();
+//        update_generator3->center_mass_ = 10.0f;
+//        update_generator3->center_position_ = {2.5f, 2.5f, 0.0f};
+//        system.AddUpdater(update_generator3);
+
+         auto n_body_updater = std::make_shared<NBodyUpdater>();
+         system.AddUpdater(n_body_updater);
     }
     system.AddEmiter(emiter);
-    system.Update(1);
+    system.Emit(1);
     renderer.Generate(&system);
 
 
@@ -182,15 +195,15 @@ void MyWin::MainLoop()
             speed = 0.02f;
         }if (glfwGetKey(win(), GLFW_KEY_M ) == GLFW_PRESS)
         {
-            dt += 0.05;
+            dt += simulation_speed_incrementation;
         }
         if (glfwGetKey(win(), GLFW_KEY_N) == GLFW_PRESS)
         {
-            dt -= 0.05;
+            dt -= simulation_speed_incrementation;
         }
         if (glfwGetKey(win(), GLFW_KEY_B) == GLFW_PRESS)
         {
-            dt = 0.00;
+            dt = 0;
         }
 
         if (glfwGetKey(win(), GLFW_KEY_P) == GLFW_PRESS)

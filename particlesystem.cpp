@@ -24,6 +24,14 @@ void ParticleSystem::Update(double dt)
 
 }
 
+void ParticleSystem::Emit(double dt)
+{
+    for(auto &emiter : emiters_)
+    {
+        emiter->Emit(dt, &particles_, &task_menager);
+    }
+}
+
 void ParticleSystem::Reset()
 {
     particles_.count_alive_ = 0;

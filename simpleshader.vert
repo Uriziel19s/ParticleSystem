@@ -13,7 +13,7 @@ void main()
     gl_Position = projection * eyePos;
 
     vColor = vec3(abs(1/position.x), abs(1/position.y), abs(1/position.z));
-
+    //vColor = vec3(0.0f, 1.0f, 0.0f);
     float dist = length(eyePos.xyz);
     float att = inversesqrt(0.1f*dist);
     gl_PointSize = 2.0f * att;

@@ -20,6 +20,7 @@ void ParticleDataContainer::Generate(size_t max_size)
     acceleration_.reset(new glm::vec3[max_size]);
     time_.reset(new glm::vec3[max_size]);
     alive_.reset(new bool[max_size]);
+    mass_.reset(new float[max_size]);
 
 }
 

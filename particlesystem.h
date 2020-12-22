@@ -27,6 +27,7 @@ public:
     ParticleSystem &operator=(const ParticleSystem &) = delete;
 
     virtual void Update(double dt);
+    void Emit(double dt);
     virtual void Reset();
 
     virtual size_t NumberOfParticles() const { return particles_.count_; }

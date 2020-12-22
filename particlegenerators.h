@@ -1,4 +1,4 @@
-#ifndef PARTICLEGENERATORS_H
+﻿#ifndef PARTICLEGENERATORS_H
 #define PARTICLEGENERATORS_H
 #include <random>
 
@@ -15,6 +15,19 @@ public:
     SpherePositionGenerator() { }
     ~SpherePositionGenerator() override{ }
     void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
+};
+
+class CirclePositionGenerator : public ParticleGenerator
+{
+public:
+    float radius_{1.0f};
+    float minimal_radius{0.0f};
+    glm::vec3 center_{0.0f, 0.0f, 0.0f};
+    CirclePositionGenerator() { }
+    ~CirclePositionGenerator() override { }
+    void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
+
+
 };
 
 class OneColorGenerator : public ParticleGenerator
@@ -45,6 +58,16 @@ public:
     glm::vec3 acceleration_ = {0.0f, 0.0f, 0.0f};
     BasicAccelerationGenerator() { }
     ~BasicAccelerationGenerator() override { }
+
+    void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
+};
+
+class BasicMassGenerator : public ParticleGenerator
+{
+public:
+    float mass_ = 0.0f;
+    BasicMassGenerator() { }
+    ~BasicMassGenerator() override { }
 
     void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
 };

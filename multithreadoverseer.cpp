@@ -70,10 +70,10 @@ void MultithreadOverseer::Stop()
 
 void MultithreadOverseer::WaitForAllTasks()
 {
-//    while(waiting_workers_ != number_of_workers_ && NumberOfTasks())
-//    {
-//        std::this_thread::sleep_for(std::chrono::nanoseconds(1));
-//    }
+    while(waiting_workers_ != number_of_workers_ || NumberOfTasks())
+    {
+        std::this_thread::sleep_for(std::chrono::nanoseconds(1));
+    }
 }
 
 size_t MultithreadOverseer::NumberOfTasks()

@@ -16,7 +16,17 @@ public:
     ~LawOfUniversalGravitationUpdater() override { }
     void Update(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager) override;
 private:
-    void Calculate(float dt, ParticleDataContainer *p, size_t start_id, size_t end_it);
+    void Calculate(float dt, ParticleDataContainer *p, size_t start_id, size_t end_id);
+};
+
+class NBodyUpdater : public ParticleUpdater
+{
+public:
+    NBodyUpdater() { }
+    ~NBodyUpdater() override {}
+    void Update(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager) override;
+private:
+    void Calculate(float dt, ParticleDataContainer *p, size_t start_id, size_t end_id);
 };
 
 #endif // PARTICLEUPDATERS_H
