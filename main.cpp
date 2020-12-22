@@ -74,8 +74,9 @@ void MyWin::MousePosCB(double xp, double yp)
 // ==========================================================================
 void MyWin::MainLoop()
 {
-    const size_t kNumberOfParticles = 1000000;
-    const double dt = 0.1;
+    double last_time = 0;
+    const size_t kNumberOfParticles = 2000000;
+     double dt = 0.05;
     Shader program("../../ParticleSys/app/simpleshader.vert", "../../ParticleSys/app/simpleshader.frag");
     program.use();
     ParticleSystem system(kNumberOfParticles, 11);
@@ -84,8 +85,8 @@ void MyWin::MainLoop()
     {
         //settings section
         auto position_generator = std::make_shared<SpherePositionGenerator>();
-        position_generator->center_ = {0.0f, 0.0f, 0.0f};
-        position_generator->radius_ = 10.0f;
+        position_generator->center_ = {2.5f, 0.0f, 0.0f};
+        position_generator->radius_ = 20.0f;
         emiter->AddGenerator(position_generator);
 
         auto color_generator = std::make_shared<OneColorGenerator>();
@@ -93,7 +94,7 @@ void MyWin::MainLoop()
         emiter->AddGenerator(color_generator);
 
         auto velocity_generator = std::make_shared<BasicVelocityGenerator>();
-        velocity_generator->velocity_ = {0.50f, 0.0f, 0.0f};
+        velocity_generator->velocity_ = {0.5f, 0.0f, 0.0f};
         emiter->AddGenerator(velocity_generator);
 
         auto acceleration_generator = std::make_shared<BasicAccelerationGenerator>();
@@ -101,9 +102,19 @@ void MyWin::MainLoop()
         emiter->AddGenerator(acceleration_generator);
 
         auto update_generator = std::make_shared<LawOfUniversalGravitationUpdater>();
-        update_generator->center_mass_ = 3.0f;
+        update_generator->center_mass_ = 10.0f;
         update_generator->center_position_ = {0.0f, 0.0f, 0.0f};
         system.AddUpdater(update_generator);
+
+        auto update_generator2 = std::make_shared<LawOfUniversalGravitationUpdater>();
+        update_generator2->center_mass_ = 10.0f;
+        update_generator2->center_position_ = {5.0f, 0.0f, 0.0f};
+        system.AddUpdater(update_generator2);
+
+        auto update_generator3 = std::make_shared<LawOfUniversalGravitationUpdater>();
+        update_generator3->center_mass_ = 10.0f;
+        update_generator3->center_position_ = {2.5f, 2.5f, 0.0f};
+        system.AddUpdater(update_generator3);
     }
     system.AddEmiter(emiter);
     system.Update(1);
@@ -171,6 +182,22 @@ void MyWin::MainLoop()
             speed = 0.02f;
         }if (glfwGetKey(win(), GLFW_KEY_M ) == GLFW_PRESS)
         {
+            dt += 0.05;
+        }
+        if (glfwGetKey(win(), GLFW_KEY_N) == GLFW_PRESS)
+        {
+            dt -= 0.05;
+        }
+        if (glfwGetKey(win(), GLFW_KEY_B) == GLFW_PRESS)
+        {
+            dt = 0.00;
+        }
+
+        if (glfwGetKey(win(), GLFW_KEY_P) == GLFW_PRESS)
+        {
+            double temp = glfwGetTime();
+            std::cout << 1/(glfwGetTime() - last_time) << " " << dt << std::endl;
+            last_time = temp;
         }
 
 

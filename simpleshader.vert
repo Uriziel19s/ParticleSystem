@@ -12,7 +12,7 @@ void main()
     vec4 eyePos = view * vec4(position, 1);
     gl_Position = projection * eyePos;
 
-    vColor = color;
+    vColor = vec3(abs(1/position.x), abs(1/position.y), abs(1/position.z));
 
     float dist = length(eyePos.xyz);
     float att = inversesqrt(0.1f*dist);

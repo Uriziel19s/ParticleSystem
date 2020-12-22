@@ -21,6 +21,7 @@ void ParticleSystem::Update(double dt)
         updater->Update(dt, &particles_, &task_menager);
     }
     task_menager.WaitForAllTasks();
+
 }
 
 void ParticleSystem::Reset()
