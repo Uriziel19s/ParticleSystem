@@ -49,7 +49,7 @@ void OpenGLParticleRenderer::Update()
     assert(system_ != nullptr);
     assert(position_buffer_ > 0 && color_buffer_ > 0);
 
-    const size_t count = system_->NumberOfParticles();
+    const size_t count = system_->NumberOfAliveParticles();
     if(count > 0)
     {
         glBindBuffer(GL_ARRAY_BUFFER, position_buffer_);

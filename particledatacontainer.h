@@ -19,6 +19,7 @@ public:
     void KillAll();
     void Wake(size_t id);
     void WakeUpAll();
+    void WakeUpInRange(size_t start_id, size_t end_id);
     void SwapData(size_t id_A, size_t id_B);
 
     std::unique_ptr<glm::vec3[]> positions_;

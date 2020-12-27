@@ -72,4 +72,14 @@ public:
     void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
 };
 
+class RandomMassGenerator : public ParticleGenerator
+{
+public:
+    float min_mass_{0.0f};
+    float max_mass = {1.0f};
+    RandomMassGenerator() { }
+    ~RandomMassGenerator() override { }
+
+    void generate(double dt, ParticleDataContainer *p, MultithreadOverseer *task_menager, size_t start_id, size_t end_id) override;
+};
   #endif // PARTICLEGENERATORS_H

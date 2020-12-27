@@ -65,7 +65,7 @@ void Camera::pushCamera(glm::vec3 direction, float scale)
 
 glm::mat4 Camera::getProjection(float screenWidth, float screenHeight)
 {
-    projection = glm::perspective(glm::radians(fov), screenWidth / screenHeight, 1.0f, 100.0f);
+    projection = glm::perspective(glm::radians(fov), screenWidth / screenHeight, 1.0f, 150.0f);
     return projection;
 }
 

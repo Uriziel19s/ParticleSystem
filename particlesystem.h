@@ -31,7 +31,7 @@ public:
     virtual void Reset();
 
     virtual size_t NumberOfParticles() const { return particles_.count_; }
-    virtual size_t NumberOfAliveParticles() const { return particles_.count_; }
+    virtual size_t NumberOfAliveParticles() const { return particles_.count_alive_; }
 
     void AddEmiter(std::shared_ptr<ParticleEmitter> emiter) { emiters_.push_back(emiter); }
     void AddUpdater(std::shared_ptr<ParticleUpdater> updater) { updaters_.push_back(updater); }

@@ -17,10 +17,8 @@ void ParticleEmitter::Emit(double dt, ParticleDataContainer *p, MultithreadOvers
         {
             gen->generate(dt, p, task_menager, kStartId, kEndId);
         }
-    p->WakeUpAll();
+        p->WakeUpInRange(kStartId, kEndId);
     }
-
-
 }
 
 void ParticleEmitter::AddGenerator(std::shared_ptr<ParticleGenerator> generator)

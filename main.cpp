@@ -81,18 +81,18 @@ void MyWin::MainLoop()
 {
     double last_time = 0;
     const double simulation_speed_incrementation = 0.001;
-    const size_t kNumberOfParticles = 2000;
+    const size_t kNumberOfParticles = 2'000'000;
      double dt = 0.0f;
-    Shader program("../../ParticleSys/app/simpleshader.vert", "../../ParticleSys/app/simpleshader.frag");
+    Shader program("../../ParticleSys/app/simpleshader.vert", "../../ParticleSys/app/simpleshader.frag", "../../ParticleSys/app/simpleshader.geo");
     program.use();
     ParticleSystem system(kNumberOfParticles, 11);
     OpenGLParticleRenderer renderer;
-    auto emiter = std::make_shared<ParticleEmitter>(kNumberOfParticles);
+    auto emiter = std::make_shared<ParticleEmitter>(100000);
     {
         //settings section
-        auto position_generator = std::make_shared<SpherePositionGenerator>();
-        position_generator->center_ = {0.0f, 0.0f, 0.0f};
-        position_generator->radius_ = 7.0f;
+        auto position_generator = std::make_shared<CirclePositionGenerator>();
+        position_generator->center_ = {20.0f, 0.0f, 0.0f};
+        position_generator->radius_ = 1.1f;
         emiter->AddGenerator(position_generator);
 
         auto color_generator = std::make_shared<OneColorGenerator>();
@@ -100,37 +100,38 @@ void MyWin::MainLoop()
         emiter->AddGenerator(color_generator);
 
         auto velocity_generator = std::make_shared<BasicVelocityGenerator>();
-        velocity_generator->velocity_ = {1.0f, 0.0f, 0.0f};
+        velocity_generator->velocity_ = {1.0f, 0.0f, 1.0f};
         emiter->AddGenerator(velocity_generator);
 
         auto acceleration_generator = std::make_shared<BasicAccelerationGenerator>();
         acceleration_generator->acceleration_ = {0.0f, 0.0f, 0.0f};
         emiter->AddGenerator(acceleration_generator);
 
-        auto mass_generator = std::make_shared<BasicMassGenerator>();
-        mass_generator->mass_ = 0.05;
+        auto mass_generator = std::make_shared<RandomMassGenerator>();
+        mass_generator->min_mass_ = 0.05f;
+        mass_generator->max_mass = 1.0f;
         emiter->AddGenerator(mass_generator);
 
-//        auto update_generator = std::make_shared<LawOfUniversalGravitationUpdater>();
-//        update_generator->center_mass_ = 10.0f;
-//        update_generator->center_position_ = {0.0f, 0.0f, 0.0f};
-//        system.AddUpdater(update_generator);
+        auto update_generator = std::make_shared<LawOfUniversalGravitationUpdater>();
+        update_generator->center_mass_ = 25.0f;
+        update_generator->center_position_ = {0.0f, 0.0f, 0.0f};
+        system.AddUpdater(update_generator);
 
-//        auto update_generator2 = std::make_shared<LawOfUniversalGravitationUpdater>();
-//        update_generator2->center_mass_ = 10.0f;
-//        update_generator2->center_position_ = {5.0f, 0.0f, 0.0f};
-//        system.AddUpdater(update_generator2);
+        auto update_generator2 = std::make_shared<LawOfUniversalGravitationUpdater>();
+        update_generator2->center_mass_ = 55.0f;
+        update_generator2->center_position_ = {0.0f, 10.0f, 0.0f};
+        system.AddUpdater(update_generator2);
 
-//        auto update_generator3 = std::make_shared<LawOfUniversalGravitationUpdater>();
-//        update_generator3->center_mass_ = 10.0f;
-//        update_generator3->center_position_ = {2.5f, 2.5f, 0.0f};
-//        system.AddUpdater(update_generator3);
+        auto update_generator3 = std::make_shared<LawOfUniversalGravitationUpdater>();
+        update_generator3->center_mass_ = 25.0f;
+        update_generator3->center_position_ = {0.0f, 2.5f, 0.0f};
+        system.AddUpdater(update_generator3);
 
-         auto n_body_updater = std::make_shared<NBodyUpdater>();
-         system.AddUpdater(n_body_updater);
+//         auto n_body_updater = std::make_shared<NBodyUpdater>();
+//         system.AddUpdater(n_body_updater);
     }
     system.AddEmiter(emiter);
-    system.Emit(1);
+    //system.Emit(1);
     renderer.Generate(&system);
 
 

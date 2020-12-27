@@ -7,6 +7,9 @@ LIBS   += -lepoxy
 LIBS   += -lGL
 LIBS   += -lglfw
 
+QMAKE_LFLAGS_RELEASE -= -O1
+QMAKE_CXXFLAGS_RELEASE -= -O2
+QMAKE_CXXFLAGS_RELEASE += -O3
 
 SOURCES += \
     main.cpp \
@@ -37,4 +40,5 @@ HEADERS += \
 
 DISTFILES += \
     simpleshader.frag \
+    simpleshader.geo \
     simpleshader.vert

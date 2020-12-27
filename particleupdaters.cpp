@@ -19,8 +19,12 @@ void LawOfUniversalGravitationUpdater::Calculate(float dt, ParticleDataContainer
     for(size_t i = start_id; i < end_id; i++)
     {
         particleCenterVector =    center_position_ - p->positions_[i];
-        p->velocity_[i] += center_mass_ * particleCenterVector / glm::pow(glm::length(particleCenterVector), 3.0f) * dt ;
+        if(glm::length(particleCenterVector))
+        {
+            p->velocity_[i] += center_mass_ * particleCenterVector / glm::pow(glm::length(particleCenterVector), 3.0f) * dt ;
+        }
         p->positions_[i] += p->velocity_[i] * dt;
+
     }
 }
 
