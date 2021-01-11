@@ -13,9 +13,13 @@ Flexible architecture of the system alllows you to creating advanced physics sim
 System is inspired by great article "Flexible particle system" written by Bartosz Filipek. https://www.bfilipek.com 
 
 ## ToDo
+
 Faster N body simulation updater
+
 Unit Tests for updaters
+
 Demo on Youtube
+
 GUI (QT?)
 
 ## Controls
