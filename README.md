@@ -2,7 +2,7 @@
 
 ## Table of Contents
 * [General info](#general-info)
-* [ToDo](#todo)
+* [Todo](#todo)
 * [Controls](#controls)
 * [Technologies](#technologies)
 * [Running](#running)
@@ -12,7 +12,7 @@
 Flexible architecture of the system alllows you to creating advanced physics simulations.
 System is inspired by great article "Flexible particle system" written by Bartosz Filipek. https://www.bfilipek.com 
 
-## ToDo
+## Todo
 
 Faster N body simulation updater
 
