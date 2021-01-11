@@ -1,4 +1,4 @@
-# Labyrinth - 2D simple game
+# Flexible Particle System
 
 ## Table of Contents
 * [General info](#general-info)
